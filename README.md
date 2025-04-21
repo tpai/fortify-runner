@@ -42,6 +42,23 @@ curl -X GET -u username:password http://fortify_host/container/:id
 
 # start a code scan job
 curl -X POST -H "Content-Type: application/json" -d '{"repo_url":"<git_ssh_url>", "repo_name": "<git_repo_name>", "repo_type": "<python,golang,javascript>", "file_list": "<file_name>", "branch": "develop", "bypass_text": "Key Management: Hardcoded Encryption Key\nPassword Management: Hardcoded Password\n"}' -u username:password http://fortify_host/scan
+
+# start a code scan job(line wrapping)
+REPO_URL=git@gitlab:app/backend.git
+REPO_NAME=backend
+REPO_TYPE=golang
+FILE_LIST=fortify.cfg
+BRANCH=develop
+BYPASS_TEXT="Key Management: Hardcoded Encryption Key\nPassword Management: Hardcoded Password"
+
+time curl -s -X POST -H "Content-Type:application/json" -d "{ \
+  \"repo_url\":\"$REPO_URL\", \
+  \"repo_name\":\"$REPO_NAME\", \
+  \"repo_type\":\"$REPO_TYPE\", \
+  \"file_list\": \"$FILE_LIST\", \
+  \"branch\":\"$BRANCH\", \
+  \"bypass_text\":\"$BYPASS_TEXT\" \
+}" -u "username:password" http://fortify_host/scan
 ```
 
 ## Specify Scan Files
